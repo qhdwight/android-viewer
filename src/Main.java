@@ -10,7 +10,7 @@ public class Main {
     private static final String k_defaultConfig = String.format("%s:%d", k_defaultIp, k_defaultPort);
     private static final String k_relativeConfigPath = "res/config.txt";
 
-    public static final boolean debug = false;
+    public static final boolean debug = true;
 
     public static void main(String[] args) {
 

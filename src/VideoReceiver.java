@@ -1,3 +1,5 @@
+import com.sun.istack.internal.NotNull;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
@@ -89,6 +91,8 @@ public class VideoReceiver implements Runnable {
 
             m_socket = new Socket(m_ip, m_port);
 
+            if (Main.debug) System.out.println(String.format("Connected on port: %d", m_socket.getPort()));
+
             m_state = VideoReceiverState.OPEN;
 
         } catch (IOException e) {
@@ -166,12 +170,12 @@ public class VideoReceiver implements Runnable {
 
             byte[] data = new byte[length];
 
-            if (length > 0)
+            if (length > 0) {
                 clientDataStream.readFully(data);
-            else
+                return data;
+            } else {
                 return null;
-
-            return data;
+            }
 
         } catch (IOException e) {
 
