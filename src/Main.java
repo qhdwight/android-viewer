@@ -32,8 +32,8 @@ public class Main {
 
             try {
                 String line, fileText = "";
-                while ((line = reader.readLine()).isEmpty())
-                    fileText += line + "\n";
+                while ((line = reader.readLine()) != null)
+                    fileText += line;
 
                 JSONParser parser = new JSONParser();
                 try {
@@ -60,7 +60,7 @@ public class Main {
             }
         }
 
-        final int port = (int)config.get("port");
+        final int port = ((Number)config.get("port")).intValue();
         final String ip = (String)config.get("ip");
         final boolean debugging = (boolean)config.get("debugging");
 
