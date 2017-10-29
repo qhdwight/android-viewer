@@ -2,6 +2,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
+/**
+ * Displays a {@link BufferedImage} to a {@link JPanel}.
+ */
 public class ViewerPanel extends JPanel {
 
     private BufferedImage currentImage;
