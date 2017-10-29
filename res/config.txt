@@ -1,2 +1,1 @@
-localhost:1180
-false
+{"debugging":false,"port":1180,"ip":"localhost"}

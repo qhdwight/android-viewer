@@ -1,4 +1,9 @@
+import org.json.simple.parser.JSONParser;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.ParseException;
+
 import java.io.*;
+import java.util.HashMap;
 
 /**
  * Gets information about config and starts the {@link VideoReceiver}.
@@ -6,58 +11,59 @@ import java.io.*;
 public class Main {
 
     public static final boolean DEFAULT_DEBUGGING = false;
-    public static boolean DEBUGGING = DEFAULT_DEBUGGING;
 
     private static final int DEFAULT_PORT = 1180;
     private static final String DEFAULT_IP = "localhost";
-    private static final String DEFAULT_CONFIG = String.format("%s:%d\n%b", DEFAULT_IP, DEFAULT_PORT, DEFAULT_DEBUGGING);
+    private static HashMap<String, Object> DEFAULT_CONFIG_MAP = new HashMap<String, Object>() {{
+        put("ip", DEFAULT_IP);
+        put("port", DEFAULT_PORT);
+        put("debugging", DEFAULT_DEBUGGING);
+    }};
+    private static final JSONObject DEFAULT_CONFIG = new JSONObject(DEFAULT_CONFIG_MAP);
     private static final String RELATIVE_CONFIG_PATH = "res/config.txt";
 
     public static void main(String[] args) {
 
-        String config = DEFAULT_CONFIG;
+        JSONObject config = DEFAULT_CONFIG;
 
         try {
             final FileReader fileReader = new FileReader(RELATIVE_CONFIG_PATH);
-            final BufferedReader reader =new BufferedReader(fileReader);
+            final BufferedReader reader = new BufferedReader(fileReader);
 
             try {
-                final String addressAndHost = reader.readLine();
-                final String debugging = reader.readLine();
-                config = String.format("%s\n%s", addressAndHost, debugging);
+                String line, fileText = "";
+                while ((line = reader.readLine()).isEmpty())
+                    fileText += line + "\n";
+
+                JSONParser parser = new JSONParser();
+                try {
+                    config = (JSONObject)parser.parse(fileText);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
                 reader.close();
+
             } catch (IOException e) {
-                if (DEBUGGING) e.printStackTrace();
+                e.printStackTrace();
             }
         } catch (FileNotFoundException nfe) {
-            if (DEBUGGING) nfe.printStackTrace();
+            nfe.printStackTrace();
             try {
                 final FileWriter fileWriter = new FileWriter(RELATIVE_CONFIG_PATH);
                 final BufferedWriter writer = new BufferedWriter(fileWriter);
 
-                writer.write(DEFAULT_CONFIG);
+                writer.write(DEFAULT_CONFIG.toJSONString());
                 writer.flush();
                 writer.close();
             } catch (IOException e) {
-                if (DEBUGGING) e.printStackTrace();
+                e.printStackTrace();
             }
         }
 
-        // Split by lines
-        final String[] lines = config.split("\\r?\\n");
-        // Split first line by colon
-        final String[] addressAndIp = lines[0].split(":");
-        final String ip = addressAndIp[0];
+        final int port = (int)config.get("port");
+        final String ip = (String)config.get("ip");
+        final boolean debugging = (boolean)config.get("debugging");
 
-        int port;
-        DEBUGGING = Boolean.parseBoolean(lines[1]);
-        try {
-            port = Integer.parseInt(addressAndIp[1]);
-        } catch (NumberFormatException e) {
-            if (DEBUGGING) e.printStackTrace();
-            port = DEFAULT_PORT;
-        }
-
-        new VideoReceiver(port, ip);
+        new VideoReceiver(port, ip, debugging);
     }
 }
