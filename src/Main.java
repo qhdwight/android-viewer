@@ -5,19 +5,19 @@ import java.io.*;
  */
 public class Main {
 
-    private static final int k_defaultPort = 1180;
-    private static final String k_defaultIp = "localhost";
-    private static final String k_defaultConfig = String.format("%s:%d", k_defaultIp, k_defaultPort);
-    private static final String k_relativeConfigPath = "res/config.txt";
+    private static final int DEFAULT_PORT = 1180;
+    private static final String DEFAULT_IP = "localhost";
+    private static final String DEFAULT_CONFIG = String.format("%s:%d", DEFAULT_IP, DEFAULT_PORT);
+    private static final String RELATIVE_CONFIG_PATH = "res/config.txt";
 
     public static final boolean debug = true;
 
     public static void main(String[] args) {
 
-        String config = k_defaultConfig;
+        String config = DEFAULT_CONFIG;
 
         try {
-            final FileReader fileReader = new FileReader(k_relativeConfigPath);
+            final FileReader fileReader = new FileReader(RELATIVE_CONFIG_PATH);
             final BufferedReader reader =new BufferedReader(fileReader);
 
             try {
@@ -29,10 +29,10 @@ public class Main {
         } catch (FileNotFoundException nfe) {
             if (debug) nfe.printStackTrace();
             try {
-                final FileWriter fileWriter = new FileWriter(k_relativeConfigPath);
+                final FileWriter fileWriter = new FileWriter(RELATIVE_CONFIG_PATH);
                 final BufferedWriter writer = new BufferedWriter(fileWriter);
 
-                writer.write(k_defaultConfig);
+                writer.write(DEFAULT_CONFIG);
                 writer.flush();
                 writer.close();
             } catch (IOException e) {
@@ -48,7 +48,7 @@ public class Main {
             port = Integer.parseInt(split[1]);
         } catch (NumberFormatException e) {
             if (debug) e.printStackTrace();
-            port = k_defaultPort;
+            port = DEFAULT_PORT;
         }
 
         new VideoReceiver(port, ip);

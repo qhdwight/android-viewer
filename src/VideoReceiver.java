@@ -1,5 +1,3 @@
-import com.sun.istack.internal.NotNull;
-
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
@@ -20,7 +18,7 @@ public class VideoReceiver implements Runnable {
 
     private boolean m_running;
 
-    private static final long retryWait = 500, updateTime = 10;
+    private static final long RETRY_WAIT = 500, UPDATE_TIME = 10;
 
     private final ViewerPanel k_viewerPanel;
 
@@ -100,7 +98,7 @@ public class VideoReceiver implements Runnable {
             if (Main.debug) e.printStackTrace();
 
             try {
-                Thread.sleep(retryWait);
+                Thread.sleep(RETRY_WAIT);
             } catch (InterruptedException ie) {
                 if (Main.debug) ie.printStackTrace();
             }
@@ -144,7 +142,7 @@ public class VideoReceiver implements Runnable {
                 }
             }
 
-            Thread.sleep(updateTime);
+            Thread.sleep(UPDATE_TIME);
 
         } catch (InterruptedException ie) {
 
