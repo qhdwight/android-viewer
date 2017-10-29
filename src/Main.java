@@ -5,7 +5,7 @@ import java.io.*;
  */
 public class Main {
 
-    private static final int k_defaultPort = 8009;
+    private static final int k_defaultPort = 1180;
     private static final String k_defaultIp = "localhost";
     private static final String k_defaultConfig = String.format("%s:%d", k_defaultIp, k_defaultPort);
     private static final String k_relativeConfigPath = "res/config.txt";
