@@ -55,7 +55,7 @@ public class VideoReceiver implements Runnable {
             final Image icon = ImageIO.read(new File("res/logo.png"));
             frame.setIconImage(icon);
         } catch (IOException e) {
-            if (Main.debug) e.printStackTrace();
+            if (Main.DEBUGGING) e.printStackTrace();
         }
 
         frame.add(k_viewerPanel);
@@ -89,18 +89,18 @@ public class VideoReceiver implements Runnable {
 
             m_socket = new Socket(m_ip, m_port);
 
-            if (Main.debug) System.out.println(String.format("Connected on port: %d", m_socket.getPort()));
+            if (Main.DEBUGGING) System.out.println(String.format("Connected on port: %d", m_socket.getPort()));
 
             m_state = VideoReceiverState.OPEN;
 
         } catch (IOException e) {
 
-            if (Main.debug) e.printStackTrace();
+            if (Main.DEBUGGING) e.printStackTrace();
 
             try {
                 Thread.sleep(RETRY_WAIT);
             } catch (InterruptedException ie) {
-                if (Main.debug) ie.printStackTrace();
+                if (Main.DEBUGGING) ie.printStackTrace();
             }
         }
     }
@@ -146,7 +146,7 @@ public class VideoReceiver implements Runnable {
 
         } catch (InterruptedException ie) {
 
-            if (Main.debug) ie.printStackTrace();
+            if (Main.DEBUGGING) ie.printStackTrace();
         }
     }
 
@@ -177,7 +177,7 @@ public class VideoReceiver implements Runnable {
 
         } catch (IOException e) {
 
-            if (Main.debug) e.printStackTrace();
+            if (Main.DEBUGGING) e.printStackTrace();
 
             m_state = VideoReceiverState.ATTEMPTING_CONNECTION;
         }
@@ -201,7 +201,7 @@ public class VideoReceiver implements Runnable {
 
         } catch (IOException e) {
 
-            if (Main.debug) e.printStackTrace();
+            if (Main.DEBUGGING) e.printStackTrace();
             return null;
         }
     }

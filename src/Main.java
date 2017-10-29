@@ -5,12 +5,13 @@ import java.io.*;
  */
 public class Main {
 
+    public static final boolean DEFAULT_DEBUGGING = false;
+    public static boolean DEBUGGING = DEFAULT_DEBUGGING;
+
     private static final int DEFAULT_PORT = 1180;
     private static final String DEFAULT_IP = "localhost";
-    private static final String DEFAULT_CONFIG = String.format("%s:%d", DEFAULT_IP, DEFAULT_PORT);
+    private static final String DEFAULT_CONFIG = String.format("%s:%d\n%b", DEFAULT_IP, DEFAULT_PORT, DEFAULT_DEBUGGING);
     private static final String RELATIVE_CONFIG_PATH = "res/config.txt";
-
-    public static final boolean debug = true;
 
     public static void main(String[] args) {
 
@@ -21,13 +22,15 @@ public class Main {
             final BufferedReader reader =new BufferedReader(fileReader);
 
             try {
-                config = reader.readLine();
+                final String addressAndHost = reader.readLine();
+                final String debugging = reader.readLine();
+                config = String.format("%s\n%s", addressAndHost, debugging);
                 reader.close();
             } catch (IOException e) {
-                if (debug) e.printStackTrace();
+                if (DEBUGGING) e.printStackTrace();
             }
         } catch (FileNotFoundException nfe) {
-            if (debug) nfe.printStackTrace();
+            if (DEBUGGING) nfe.printStackTrace();
             try {
                 final FileWriter fileWriter = new FileWriter(RELATIVE_CONFIG_PATH);
                 final BufferedWriter writer = new BufferedWriter(fileWriter);
@@ -36,18 +39,22 @@ public class Main {
                 writer.flush();
                 writer.close();
             } catch (IOException e) {
-                if (debug) e.printStackTrace();
+                if (DEBUGGING) e.printStackTrace();
             }
         }
 
-        final String[] split = config.split("[:]");
-        final String ip = split[0];
+        // Split by lines
+        final String[] lines = config.split("\\r?\\n");
+        // Split first line by colon
+        final String[] addressAndIp = lines[0].split(":");
+        final String ip = addressAndIp[0];
 
         int port;
+        DEBUGGING = Boolean.parseBoolean(lines[1]);
         try {
-            port = Integer.parseInt(split[1]);
+            port = Integer.parseInt(addressAndIp[1]);
         } catch (NumberFormatException e) {
-            if (debug) e.printStackTrace();
+            if (DEBUGGING) e.printStackTrace();
             port = DEFAULT_PORT;
         }
 
