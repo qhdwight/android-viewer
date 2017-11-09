@@ -1,3 +1,5 @@
+package viewer;
+
 import org.json.simple.parser.JSONParser;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
@@ -8,7 +10,7 @@ import java.util.HashMap;
 /**
  * Gets information about config and starts the {@link VideoReceiver}.
  */
-public class Main {
+public class ViewerMain {
 
     public static final boolean DEFAULT_DEBUGGING = false;
 

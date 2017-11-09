@@ -1,3 +1,5 @@
+package viewer;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
@@ -19,7 +21,7 @@ public class VideoReceiver implements Runnable {
 
     private boolean m_running;
 
-    private static final long RETRY_WAIT = 500, UPDATE_TIME = 10;
+    private static final long RETRY_WAIT = 500, UPDATE_TIME = 50;
 
     private final ViewerPanel k_viewerPanel;
 

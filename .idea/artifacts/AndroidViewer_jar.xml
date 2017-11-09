@@ -3,6 +3,7 @@
     <output-path>$PROJECT_DIR$/out/artifacts/AndroidViewer_jar</output-path>
     <root id="archive" name="AndroidViewer.jar">
       <element id="module-output" name="AndroidViewer" />
+      <element id="library" level="project" name="json-simple-1.1.1" />
     </root>
   </artifact>
 </component>
